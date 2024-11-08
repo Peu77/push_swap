@@ -6,13 +6,14 @@
 /*   By: eebert <eebert@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/06 19:35:44 by eebert            #+#    #+#             */
-/*   Updated: 2024/11/08 16:23:11 by eebert           ###   ########.fr       */
+/*   Updated: 2024/11/08 22:24:44 by eebert           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 #include "push_swap.h"
 #include "ft_printf.h"
+#include <limits.h>
 
 int *list_to_array(t_list *stack, size_t length) {
     int *array;
@@ -65,140 +66,69 @@ int *get_longest_sequence(int *array, size_t length, size_t *seq_length) {
     return result;
 }
 
-void sort_array(int *array, size_t length) {
-    for (size_t i = 0; i < length; i++) {
-        for (size_t j = i + 1; j < length; j++) {
-            if (array[i] > array[j]) {
-                int tmp = array[i];
-                array[i] = array[j];
-                array[j] = tmp;
-            }
-        }
-    }
-}
-
-void push_values_to_pile_b(t_list **stack_a, t_list **stack_b, int pivot, int *lis, size_t lis_length) {
-    t_list *current = *stack_a;
-    int value;
-    int is_in_lis;
-
-    while (current && ft_lstsize(*stack_a) > (int) lis_length) {
-        value = *(int *) current->content;
-        is_in_lis = 0;
-
-        // Check if the value is in the LIS
-        for (size_t i = 0; i < lis_length; i++) {
-            if (value == lis[i]) {
-                is_in_lis = 1;
-                break;
-            }
-        }
-
-        if (!is_in_lis) {
-            if (value > pivot) {
-                pb(stack_a, stack_b);
-            } else {
-                pb(stack_a, stack_b);
-                rrb(stack_b);
-            }
-        } else {
-            ra(stack_a);
-        }
-
-        current = *stack_a;
-    }
-}
-
-int get_index_of_value(int *array, int value, size_t length) {
-    for (size_t i = 0; i < length; i++) {
-        if (array[i] == value) {
-            return i;
-        }
-    }
-    return -1;
-}
-
-void apply_target_values(t_list *stack_a, int *sorted_array, size_t length) {
+static int find_best_target(t_list *stack_a, int value_b) {
     t_list *current = stack_a;
-    int index;
+    int target = INT_MAX;
 
     while (current) {
-        t_stack_item *item = (t_stack_item *) current->content;
-        index = get_index_of_value(sorted_array, item->value, length);
-        ((t_stack_item *) current->content)->target_value = sorted_array[(index + 1) % length];
-        current = current->next;
-    }
-}
-
-int get_position_of_value(t_list *stack, int value) {
-    t_list *current = stack;
-    int position = 0;
-
-    while (current) {
-        if (((t_stack_item *) current->content)->value == value) {
-            return position;
-        }
-        position++;
+        int value_a = ((t_stack_item *)current->content)->value;
+        if (value_a > value_b && value_a < target)
+            target = value_a;
         current = current->next;
     }
 
-    return -1;
-}
-
-int calculate_shifts_to_top(t_list *stack, int stack_size, int target_value, int *up) {
-    int position = get_position_of_value(stack, target_value);
-    int shifts = position;
-    if (position > stack_size / 2) {
-        *up = 0;
-        shifts = stack_size - position;
-    } else {
-        *up = 1;
-    }
-    return shifts;
-}
-
-void calculate_moves(t_list *stack_a, t_list *stack_b) {
-    t_list *current = stack_b;
-    int up;
-    int shifts;
-
-    while (current) {
-        t_stack_item *item = (t_stack_item *) current->content;
-        shifts = calculate_shifts_to_top(stack_a, ft_lstsize(stack_a), item->target_value, &up);
-        item->moves_a.shifts = shifts;
-        item->moves_a.up = up;
-
-        shifts = calculate_shifts_to_top(stack_b, ft_lstsize(stack_b), item->value, &up);
-        item->moves_b.shifts = shifts;
-        item->moves_b.up = up;
-
-        current = current->next;
-    }
-}
-
-int calculate_total_moves(t_stack_item *item) {
-    if (item->moves_a.up == item->moves_b.up) {
-        return item->moves_a.shifts > item->moves_b.shifts ? item->moves_a.shifts : item->moves_b.shifts;
-    }
-
-    return item->moves_a.shifts + item->moves_b.shifts;
-}
-
-t_stack_item *get_cheapest_item(t_list *stack) {
-    t_list *current = stack;
-    t_stack_item *cheapest = (t_stack_item *) current->content;
-    int cheapest_cost = -1;
-
-    while (current) {
-        t_stack_item *item = (t_stack_item *) current->content;
-        if (item->moves_a.shifts == -1 || item->moves_b.shifts == -1) {
+    if (target == INT_MAX) {
+        current = stack_a;
+        target = ((t_stack_item *)current->content)->value;
+        while (current) {
+            int value_a = ((t_stack_item *)current->content)->value;
+            if (value_a < target)
+                target = value_a;
             current = current->next;
-            continue;
         }
-        int cost = calculate_total_moves(item);
-        if (cost < cheapest_cost || cheapest_cost == -1) {
+    }
+
+    return target;
+}
+
+static void calculate_costs(t_list *stack_a, t_list *stack_b) {
+    t_list *current = stack_b;
+    int len_a = ft_lstsize(stack_a);
+    int len_b = ft_lstsize(stack_b);
+    int pos_b = 0;
+
+    while (current) {
+        t_stack_item *item = (t_stack_item *)current->content;
+        int target = find_best_target(stack_a, item->value);
+        int pos_a = 0;
+        t_list *temp = stack_a;
+
+        while (temp && ((t_stack_item *)temp->content)->value != target) {
+            pos_a++;
+            temp = temp->next;
+        }
+
+        item->cost_a = pos_a <= len_a / 2 ? pos_a : -(len_a - pos_a);
+        item->cost_b = pos_b <= len_b / 2 ? pos_b : -(len_b - pos_b);
+        item->target = target;
+
+        current = current->next;
+        pos_b++;
+    }
+}
+
+static t_stack_item *find_cheapest_move(t_list *stack_b) {
+    t_list *current = stack_b;
+    t_stack_item *cheapest = NULL;
+    int min_cost = INT_MAX;
+
+    while (current) {
+        t_stack_item *item = (t_stack_item *)current->content;
+        int cost = abs(item->cost_a) + abs(item->cost_b);
+
+        if (cost < min_cost) {
+            min_cost = cost;
             cheapest = item;
-            cheapest_cost = cost;
         }
         current = current->next;
     }
@@ -206,69 +136,82 @@ t_stack_item *get_cheapest_item(t_list *stack) {
     return cheapest;
 }
 
-void move_item_back(t_list **stack_a, t_list **stack_b, t_stack_item *cheapest) {
-    if (cheapest->moves_a.up == cheapest->moves_b.up) {
-        while (cheapest->moves_a.shifts > 0 && cheapest->moves_b.shifts > 0) {
-            if (cheapest->moves_a.up) {
-                rr(stack_a, stack_b);
-            } else {
-                rrr(stack_a, stack_b);
-            }
-            cheapest->moves_a.shifts--;
-            cheapest->moves_b.shifts--;
-        }
+static void execute_move(t_list **stack_a, t_list **stack_b, t_stack_item *item) {
+    while (item->cost_a > 0 && item->cost_b > 0) {
+        rr(stack_a, stack_b);
+        item->cost_a--;
+        item->cost_b--;
+    }
+    while (item->cost_a < 0 && item->cost_b < 0) {
+        rrr(stack_a, stack_b);
+        item->cost_a++;
+        item->cost_b++;
     }
 
-    for (int i = 0; i < cheapest->moves_a.shifts; i++) {
-        if (cheapest->moves_a.up) {
-            ra(stack_a);
-        } else {
-            rra(stack_a);
-        }
-    }
+    while (item->cost_a > 0) { ra(stack_a); item->cost_a--; }
+    while (item->cost_a < 0) { rra(stack_a); item->cost_a++; }
+    while (item->cost_b > 0) { rb(stack_b); item->cost_b--; }
+    while (item->cost_b < 0) { rrb(stack_b); item->cost_b++; }
+}
 
-    for (int i = 0; i < cheapest->moves_b.shifts; i++) {
-        if (cheapest->moves_b.up) {
-            rb(stack_b);
-        } else {
-            rrb(stack_b);
-        }
+static int is_in_array(int value, int *array, size_t length) {
+    for (size_t i = 0; i < length; i++) {
+        if (array[i] == value)
+            return 1;
     }
+    return 0;
 }
 
 void sort_stack(t_list **stack_a, t_list **stack_b) {
-    (void) stack_b;
     size_t length = ft_lstsize(*stack_a);
     int *array = list_to_array(*stack_a, length);
-    size_t sequence_length;
-    int *seq = get_longest_sequence(array, length, &sequence_length);
-    sort_array(array, length);
+    size_t lis_length;
+    int *lis = get_longest_sequence(array, length, &lis_length);
 
-    apply_target_values(*stack_a, array, length);
+    t_list *current = *stack_a;
+    while (ft_lstsize(*stack_a) > (int)lis_length) {
+        int value = ((t_stack_item *)current->content)->value;
+        if (!is_in_array(value, lis, lis_length)) {
+            pb(stack_a, stack_b);
+            if (value > array[length / 2])
+                rb(stack_b);
+        } else {
+            ra(stack_a);
+        }
+        current = *stack_a;
+    }
 
-    int pivot = array[length / 2];
-    push_values_to_pile_b(stack_a, stack_b, pivot, seq, sequence_length);
-
-
-    while (ft_lstsize(*stack_b) > 0) {
-        calculate_moves(*stack_a, *stack_b);
-        t_stack_item *cheapest = get_cheapest_item(*stack_b);
-
-        move_item_back(stack_a, stack_b, cheapest);
+    while (*stack_b) {
+        calculate_costs(*stack_a, *stack_b);
+        t_stack_item *cheapest = find_cheapest_move(*stack_b);
+        execute_move(stack_a, stack_b, cheapest);
         pa(stack_a, stack_b);
     }
 
-    int smallest_element = array[0];
-    int up;
-    int moves_to_top = calculate_shifts_to_top(*stack_a, ft_lstsize(*stack_a), smallest_element, &up);
-    for (int i = 0; i < moves_to_top; i++) {
-        if (up) {
-            ra(stack_a);
-        } else {
-            rra(stack_a);
+    int min_pos = 0;
+    int min_val = ((t_stack_item *)(*stack_a)->content)->value;
+    current = *stack_a;
+    int pos = 0;
+
+    while (current) {
+        int val = ((t_stack_item *)current->content)->value;
+        if (val < min_val) {
+            min_val = val;
+            min_pos = pos;
         }
+        pos++;
+        current = current->next;
     }
 
-    free(seq);
+    int size = ft_lstsize(*stack_a);
+    if (min_pos <= size / 2) {
+        while (min_pos--)
+            ra(stack_a);
+    } else {
+        while (min_pos++ < size)
+            rra(stack_a);
+    }
+
+    free(lis);
     free(array);
 }

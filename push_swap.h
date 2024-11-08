@@ -6,7 +6,7 @@
 /*   By: eebert <eebert@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/06 19:34:26 by eebert            #+#    #+#             */
-/*   Updated: 2024/11/08 15:36:07 by eebert           ###   ########.fr       */
+/*   Updated: 2024/11/08 22:22:32 by eebert           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,9 +22,9 @@ typedef struct s_moves {
 
 typedef struct s_stack_item {
     int value;
-    int target_value;
-    t_moves moves_a;
-    t_moves moves_b;
+    int cost_a;
+    int cost_b;
+    int target;
 } t_stack_item;
 
 
