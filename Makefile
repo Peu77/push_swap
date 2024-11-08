@@ -1,7 +1,7 @@
 NAME = push_swap
 NAME_BONUS = checker
 CC = cc
-CFLAGS = -Wall -Wextra -Werror -I $(FTPRINTF_DIR)/src -I $(FTPRINTF_DIR)/libft/ -fsanitize=address -g
+CFLAGS = -Wall -Wextra -Werror -I $(FTPRINTF_DIR)/src -I $(FTPRINTF_DIR)/libft/
 
 FTPRINTF_DIR = ft_printf
 FTPRINTF_LIB = $(FTPRINTF_DIR)/libftprintf.a

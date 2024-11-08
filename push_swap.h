@@ -6,7 +6,7 @@
 /*   By: eebert <eebert@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/06 19:34:26 by eebert            #+#    #+#             */
-/*   Updated: 2024/11/08 22:22:32 by eebert           ###   ########.fr       */
+/*   Updated: 2024/11/08 23:04:05 by eebert           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,11 +14,7 @@
 # define PUSH_SWAP_H
 
 #include "libft.h"
-
-typedef struct s_moves {
-    int shifts;
-    int up;
-} t_moves;
+#include <stdbool.h>
 
 typedef struct s_stack_item {
     int value;
@@ -27,6 +23,8 @@ typedef struct s_stack_item {
     int target;
 } t_stack_item;
 
+
+bool is_invalid_args(int argc, char **argv);
 
 void parse_args_to_stack(int argc, char **argv, t_list **stack_a);
 

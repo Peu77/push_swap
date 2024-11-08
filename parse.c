@@ -6,13 +6,68 @@
 /*   By: eebert <eebert@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/06 19:33:30 by eebert            #+#    #+#             */
-/*   Updated: 2024/11/08 15:33:54 by eebert           ###   ########.fr       */
+/*   Updated: 2024/11/08 23:59:18 by eebert           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 #include "push_swap.h"
 #include <stdlib.h>
+#include <stdbool.h>
+#include "ft_printf.h"
+
+static int ft_abs(int value) {
+    return value < 0 ? -value : value;
+}
+
+static bool did_overflow(int value, char *str) {
+    if (*str == '-' || *str == '+') {
+        if (*str == '-' && value > 0)
+            return true;
+        str++;
+    } else if (value < 0) {
+        return true;
+    }
+
+    size_t len = ft_strlen(str);
+    if (!len)
+        return true;
+
+    while (len--) {
+        if (str[len] != ft_abs(value % 10) + '0') {
+            return true;
+        }
+        value /= 10;
+    }
+    return false;
+}
+
+bool is_invalid_args(int argc, char **argv) {
+    int i;
+    int j;
+
+    i = 1;
+    while (i < argc) {
+        j = 0;
+        while (argv[i][j]) {
+            if (argv[i][j] == '-' || argv[i][j] == '+') {
+                j++;
+                continue;
+            }
+
+            if (!ft_isdigit(argv[i][j]) && argv[i][j] != ' ') {
+                return true;
+            }
+            j++;
+        }
+
+        if (j > 11 || did_overflow(ft_atoi(argv[i]), argv[i])) {
+            return true;
+        }
+        i++;
+    }
+    return false;
+}
 
 void parse_args_to_stack(int argc, char **argv, t_list **stack_a) {
     int i;
@@ -27,11 +82,9 @@ void parse_args_to_stack(int argc, char **argv, t_list **stack_a) {
         while (split[j]) {
             item = malloc(sizeof(t_stack_item));
             item->value = ft_atoi(split[j]);
-            item->target_value = 0;
-            item->moves_a.shifts = 0;
-            item->moves_a.up = 0;
-            item->moves_b.shifts = 0;
-            item->moves_b.up = 0;
+            item->cost_a = 0;
+            item->cost_b = 0;
+            item->target = 0;
 
             free(split[j]);
             ft_lstadd_back(stack_a, ft_lstnew(item));
