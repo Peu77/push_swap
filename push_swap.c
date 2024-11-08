@@ -1,66 +1,66 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   push_swap.c                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: eebert <eebert@student.42.fr>              +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/11/05 13:56:03 by eebert            #+#    #+#             */
+/*   Updated: 2024/11/08 13:49:40 by eebert           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include <stdio.h>
 #include <stdlib.h>
-
+#include <limits.h>
+#include "push_swap.h"
 #include "libft.h"
 
-void  parse_args_to_stack(int argc, char **argv, t_list **stack_a)
-{
-    int i;
-    int j;
-    int* num;
-    char **split;
+t_list *ft_lstlast(t_list *lst) {
+    if (!lst) {
+        return NULL;
+    }
 
-    i = 1;
-    while (i < argc)
-    {
-        split = ft_split(argv[i], ' ');
-        j = 0;
-        while (split[j])
-        {
-            num = (int*)malloc(sizeof(int));
-            *num = ft_atoi(split[j]);
-            free(split[j]);
-            ft_lstadd_back(stack_a, ft_lstnew(num));
-            j++;
-        }
-        free(split);
-        i++;
+    while (lst->next) {
+        lst = lst->next;
+    }
+
+    return lst;
+}
+
+
+void print_stack(t_list *stack) {
+    t_list *current;
+
+    current = stack;
+    while (current) {
+        printf("%d\n", *(int *) current->content);
+        current = current->next;
     }
 }
 
-void swap_first(t_list** stack_a, t_list** stack_b)
-{
-    // push first element of stack_a to stack_b
 
-    t_list* new_node = ft_lstnew((*stack_a)->content);
-    ft_lstadd_front(stack_b, new_node);
-    ft_lst
-}
-
-void print_stack(void* content)
-{
-    printf("%d\n", *(int*)content);
-}
-
-int main(int argc, char** argv)
-{
+int main(int argc, char **argv) {
     t_list *stack_a;
     t_list *stack_b;
+
+
+    if (argc < 2) {
+        printf("Error: no arguments\n");
+        return 1;
+    }
 
     stack_a = NULL;
     stack_b = NULL;
 
+
     parse_args_to_stack(argc, argv, &stack_a);
-    swap_first( &stack_a, &stack_b);
+    // use sort_stack to sort stack_a
+    sort_stack(&stack_a, &stack_b);
 
 
-    printf("stack a:\n");
-    ft_lstiter(stack_a, print_stack);
 
-
-    printf("stack b:\n");
-    ft_lstiter(stack_b, print_stack);
-
-    printf("Hello, World!\n");
+    ft_lstclear(&stack_a, free);
+    ft_lstclear(&stack_b, free);
     return 0;
 }
