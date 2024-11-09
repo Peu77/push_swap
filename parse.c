@@ -6,7 +6,7 @@
 /*   By: eebert <eebert@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/06 19:33:30 by eebert            #+#    #+#             */
-/*   Updated: 2024/11/08 23:59:18 by eebert           ###   ########.fr       */
+/*   Updated: 2024/11/09 15:15:27 by eebert           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,7 +84,6 @@ void parse_args_to_stack(int argc, char **argv, t_list **stack_a) {
             item->value = ft_atoi(split[j]);
             item->cost_a = 0;
             item->cost_b = 0;
-            item->target = 0;
 
             free(split[j]);
             ft_lstadd_back(stack_a, ft_lstnew(item));

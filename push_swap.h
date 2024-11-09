@@ -6,7 +6,7 @@
 /*   By: eebert <eebert@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/06 19:34:26 by eebert            #+#    #+#             */
-/*   Updated: 2024/11/09 14:48:26 by eebert           ###   ########.fr       */
+/*   Updated: 2024/11/09 15:16:46 by eebert           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,15 +20,15 @@ typedef struct s_stack_item {
     int value;
     int cost_a;
     int cost_b;
-    int target;
 } t_stack_item;
-
 
 int	*get_longest_sequence(int *array, size_t length, size_t *seq_length);
 
 bool is_invalid_args(int argc, char **argv);
 
 void parse_args_to_stack(int argc, char **argv, t_list **stack_a);
+
+void calculate_costs(t_list *stack_a, t_list *stack_b);
 
 void sort_stack(t_list **stack_a, t_list **stack_b);
 

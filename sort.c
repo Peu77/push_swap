@@ -6,7 +6,7 @@
 /*   By: eebert <eebert@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/06 19:35:44 by eebert            #+#    #+#             */
-/*   Updated: 2024/11/09 14:48:39 by eebert           ###   ########.fr       */
+/*   Updated: 2024/11/09 15:12:24 by eebert           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,57 +29,6 @@ int *list_to_array(t_list *stack, size_t length) {
         i++;
     }
     return array;
-}
-
-static int find_best_target(t_list *stack_a, int value_b) {
-    t_list *current = stack_a;
-    int target = INT_MAX;
-
-    while (current) {
-        int value_a = ((t_stack_item *) current->content)->value;
-        if (value_a > value_b && value_a < target)
-            target = value_a;
-        current = current->next;
-    }
-
-    if (target == INT_MAX) {
-        current = stack_a;
-        target = ((t_stack_item *) current->content)->value;
-        while (current) {
-            int value_a = ((t_stack_item *) current->content)->value;
-            if (value_a < target)
-                target = value_a;
-            current = current->next;
-        }
-    }
-
-    return target;
-}
-
-static void calculate_costs(t_list *stack_a, t_list *stack_b) {
-    t_list *current = stack_b;
-    int len_a = ft_lstsize(stack_a);
-    int len_b = ft_lstsize(stack_b);
-    int pos_b = 0;
-
-    while (current) {
-        t_stack_item *item = (t_stack_item *) current->content;
-        int target = find_best_target(stack_a, item->value);
-        int pos_a = 0;
-        t_list *temp = stack_a;
-
-        while (temp && ((t_stack_item *) temp->content)->value != target) {
-            pos_a++;
-            temp = temp->next;
-        }
-
-        item->cost_a = pos_a <= len_a / 2 ? pos_a : -(len_a - pos_a);
-        item->cost_b = pos_b <= len_b / 2 ? pos_b : -(len_b - pos_b);
-        item->target = target;
-
-        current = current->next;
-        pos_b++;
-    }
 }
 
 static t_stack_item *find_cheapest_move(t_list *stack_b) {
