@@ -8,7 +8,7 @@ FTPRINTF_LIB = $(FTPRINTF_DIR)/libftprintf.a
 
 COMMON_SRC = operations_utils.c operations.c operations2.c operations3.c
 
-SRC = push_swap.c  parse.c sort.c stack.c longest_sequence.c costs.c moves.c array_utils.c $(COMMON_SRC)
+SRC = push_swap.c  parse.c sort.c longest_sequence.c costs.c moves.c array_utils.c $(COMMON_SRC)
 SRC_BONUS = checker.c
 
 OBJ = $(SRC:.c=.o)
