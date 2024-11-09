@@ -13,28 +13,7 @@
 #include "libft.h"
 #include "push_swap.h"
 #include <stdlib.h>
-
-static bool	exist_duplicates(t_list *stack)
-{
-	t_list	*current;
-	t_list	*tmp;
-
-	current = stack;
-	while (current)
-	{
-		tmp = current->next;
-		while (tmp)
-		{
-			if (*(int *)current->content == *(int *)tmp->content)
-			{
-				return (true);
-			}
-			tmp = tmp->next;
-		}
-		current = current->next;
-	}
-	return (false);
-}
+#include "parse.h"
 
 int	main(int argc, char **argv)
 {

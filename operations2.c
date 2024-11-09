@@ -6,7 +6,7 @@
 /*   By: eebert <eebert@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/09 19:24:13 by eebert            #+#    #+#             */
-/*   Updated: 2024/11/09 19:27:26 by eebert           ###   ########.fr       */
+/*   Updated: 2024/11/09 22:15:41 by eebert           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,33 +14,38 @@
 #include "libft.h"
 #include "operations.h"
 
-void	ra(t_list **stack_a)
+void	ra(t_list **stack_a, bool print)
 {
 	shift_up(stack_a);
-	ft_printf("ra\n");
+	if (print)
+		ft_printf("ra\n");
 }
 
-void	rb(t_list **stack_b)
+void	rb(t_list **stack_b, bool print)
 {
 	shift_up(stack_b);
-	ft_printf("rb\n");
+	if (print)
+		ft_printf("rb\n");
 }
 
-void	rr(t_list **stack_a, t_list **stack_b)
+void	rr(t_list **stack_a, t_list **stack_b, bool print)
 {
 	shift_up(stack_a);
 	shift_up(stack_b);
-	ft_printf("rr\n");
+	if (print)
+		ft_printf("rr\n");
 }
 
-void	rra(t_list **stack_a)
+void	rra(t_list **stack_a, bool print)
 {
 	shift_down(stack_a);
-	ft_printf("rra\n");
+	if (print)
+		ft_printf("rra\n");
 }
 
-void	rrb(t_list **stack_b)
+void	rrb(t_list **stack_b, bool print)
 {
 	shift_down(stack_b);
-	ft_printf("rrb\n");
+	if (print)
+		ft_printf("rrb\n");
 }

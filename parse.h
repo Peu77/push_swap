@@ -1,23 +1,25 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   operations3.c                                      :+:      :+:    :+:   */
+/*   parse.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: eebert <eebert@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/11/09 19:25:40 by eebert            #+#    #+#             */
-/*   Updated: 2024/11/09 19:26:42 by eebert           ###   ########.fr       */
+/*   Created: 2024/11/09 21:42:59 by eebert            #+#    #+#             */
+/*   Updated: 2024/11/09 22:25:34 by eebert           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "ft_printf.h"
-#include "libft.h"
-#include "operations.h"
+#ifndef PARSE_H
+# define PARSE_H
 
-void	rrr(t_list **stack_a, t_list **stack_b, bool print)
-{
-	shift_down(stack_a);
-	shift_down(stack_b);
-	if (print)
-		ft_printf("rrr\n");
-}
+#include "libft.h"
+#include <stdbool.h>
+
+void	parse_args_to_stack(int argc, char **argv, t_list **stack_a);
+
+bool	is_invalid_args(int argc, char **argv);
+
+bool	exist_duplicates(t_list *stack);
+
+#endif

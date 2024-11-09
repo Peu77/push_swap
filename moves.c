@@ -6,7 +6,7 @@
 /*   By: eebert <eebert@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/09 19:12:48 by eebert            #+#    #+#             */
-/*   Updated: 2024/11/09 19:28:29 by eebert           ###   ########.fr       */
+/*   Updated: 2024/11/09 22:17:55 by eebert           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,13 +52,13 @@ static void	execute_double_moves(t_list **stack_a, t_list **stack_b,
 {
 	while (item->cost_a > 0 && item->cost_b > 0)
 	{
-		rr(stack_a, stack_b);
+		rr(stack_a, stack_b, true);
 		item->cost_a--;
 		item->cost_b--;
 	}
 	while (item->cost_a < 0 && item->cost_b < 0)
 	{
-		rrr(stack_a, stack_b);
+		rrr(stack_a, stack_b, true);
 		item->cost_a++;
 		item->cost_b++;
 	}
@@ -69,22 +69,22 @@ void	execute_move(t_list **stack_a, t_list **stack_b, t_stack_item *item)
 	execute_double_moves(stack_a, stack_b, item);
 	while (item->cost_a > 0)
 	{
-		ra(stack_a);
+		ra(stack_a, true);
 		item->cost_a--;
 	}
 	while (item->cost_a < 0)
 	{
-		rra(stack_a);
+		rra(stack_a, true);
 		item->cost_a++;
 	}
 	while (item->cost_b > 0)
 	{
-		rb(stack_b);
+		rb(stack_b, true);
 		item->cost_b--;
 	}
 	while (item->cost_b < 0)
 	{
-		rrb(stack_b);
+		rrb(stack_b, true);
 		item->cost_b++;
 	}
 }

@@ -6,7 +6,7 @@
 /*   By: eebert <eebert@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/06 19:33:30 by eebert            #+#    #+#             */
-/*   Updated: 2024/11/09 19:30:15 by eebert           ###   ########.fr       */
+/*   Updated: 2024/11/09 22:25:21 by eebert           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,6 +75,28 @@ bool	is_invalid_args(int argc, char **argv)
 		i++;
 	}
 	return (false);
+}
+
+bool	exist_duplicates(t_list *stack)
+{
+    t_list	*current;
+    t_list	*tmp;
+
+    current = stack;
+    while (current)
+    {
+        tmp = current->next;
+        while (tmp)
+        {
+            if (*(int *)current->content == *(int *)tmp->content)
+            {
+                return (true);
+            }
+            tmp = tmp->next;
+        }
+        current = current->next;
+    }
+    return (false);
 }
 
 void	parse_args_to_stack(int argc, char **argv, t_list **stack_a)

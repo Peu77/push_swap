@@ -6,15 +6,15 @@ CFLAGS = -Wall -Wextra -Werror -I $(FTPRINTF_DIR)/src -I $(FTPRINTF_DIR)/libft/
 FTPRINTF_DIR = ft_printf
 FTPRINTF_LIB = $(FTPRINTF_DIR)/libftprintf.a
 
-COMMON_SRC = operations_utils.c operations.c operations2.c operations3.c
+COMMON_SRC = operations_utils.c operations.c operations2.c operations3.c parse.c
 
-SRC = push_swap.c  parse.c sort.c longest_sequence.c costs.c moves.c array_utils.c $(COMMON_SRC)
-SRC_BONUS = checker.c
+SRC = push_swap.c sort.c longest_sequence.c costs.c moves.c array_utils.c $(COMMON_SRC)
+SRC_BONUS = checker.c $(COMMON_SRC)
 
 OBJ = $(SRC:.c=.o)
 OBJ_BONUS = $(SRC_BONUS:.c=.o)
 
-all: $(NAME)
+all: $(NAME) $(NAME_BONUS)
 
 run: all
 	./$(NAME) 2 1 3 6 5 8 7 4

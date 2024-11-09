@@ -6,7 +6,7 @@
 /*   By: eebert <eebert@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/06 19:35:44 by eebert            #+#    #+#             */
-/*   Updated: 2024/11/09 19:28:15 by eebert           ###   ########.fr       */
+/*   Updated: 2024/11/09 22:17:06 by eebert           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 #include "libft.h"
 #include "push_swap.h"
 #include "operations.h"
+#include <stdbool.h>
 
 static void	push_to_b(t_list **stack_a, t_list **stack_b, t_array lis,
 		t_array array)
@@ -27,13 +28,13 @@ static void	push_to_b(t_list **stack_a, t_list **stack_b, t_array lis,
 		value = ((t_stack_item *)current->content)->value;
 		if (!is_in_array(value, lis.array, lis.length))
 		{
-			pb(stack_a, stack_b);
+			pb(stack_a, stack_b, true);
 			if (value > array.array[array.length / 2])
-				rb(stack_b);
+				rb(stack_b, true);
 		}
 		else
 		{
-			ra(stack_a);
+			ra(stack_a, true);
 		}
 		current = *stack_a;
 	}
@@ -74,12 +75,12 @@ static void	final_rotation(t_list **stack_a)
 	if (min_pos <= size / 2)
 	{
 		while (min_pos--)
-			ra(stack_a);
+			ra(stack_a, true);
 	}
 	else
 	{
 		while (min_pos++ < size)
-			rra(stack_a);
+			rra(stack_a, true);
 	}
 }
 
@@ -101,7 +102,7 @@ void	sort_stack(t_list **stack_a, t_list **stack_b)
 		calculate_costs(*stack_a, *stack_b);
 		cheapest = find_cheapest_move(*stack_b);
 		execute_move(stack_a, stack_b, cheapest);
-		pa(stack_a, stack_b);
+		pa(stack_a, stack_b, true);
 	}
 	final_rotation(stack_a);
 	free(lis);
