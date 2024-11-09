@@ -6,7 +6,7 @@ CFLAGS = -Wall -Wextra -Werror -I $(FTPRINTF_DIR)/src -I $(FTPRINTF_DIR)/libft/
 FTPRINTF_DIR = ft_printf
 FTPRINTF_LIB = $(FTPRINTF_DIR)/libftprintf.a
 
-SRC = push_swap.c operations.c parse.c sort.c stack.c
+SRC = push_swap.c operations.c parse.c sort.c stack.c longest_sequence.c
 SRC_BONUS = checker.c
 
 OBJ = $(SRC:.c=.o)

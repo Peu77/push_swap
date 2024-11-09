@@ -6,7 +6,7 @@
 /*   By: eebert <eebert@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/06 19:34:26 by eebert            #+#    #+#             */
-/*   Updated: 2024/11/08 23:04:05 by eebert           ###   ########.fr       */
+/*   Updated: 2024/11/09 14:48:26 by eebert           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,8 @@ typedef struct s_stack_item {
     int target;
 } t_stack_item;
 
+
+int	*get_longest_sequence(int *array, size_t length, size_t *seq_length);
 
 bool is_invalid_args(int argc, char **argv);
 
