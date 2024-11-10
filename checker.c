@@ -6,7 +6,7 @@
 /*   By: eebert <eebert@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/09 20:57:00 by eebert            #+#    #+#             */
-/*   Updated: 2024/11/10 19:02:53 by eebert           ###   ########.fr       */
+/*   Updated: 2024/11/10 19:10:12 by eebert           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,8 @@ static int	get_next_operation(char *operation)
 	{
 		if (*buffer == '\n')
 		{
+            if(i <= 1)
+                return (0);
 			break ;
 		}
 		*operation = *buffer;
