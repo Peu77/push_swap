@@ -14,6 +14,11 @@ SRC_BONUS = checker.c $(COMMON_SRC)
 OBJ = $(SRC:.c=.o)
 OBJ_BONUS = $(SRC_BONUS:.c=.o)
 
+GREEN = \e[32m
+RED = \e[31m
+BLUE = \e[34m
+RESET = \e[0m
+
 all: $(NAME) $(NAME_BONUS)
 
 run: all
@@ -40,4 +45,69 @@ fclean: clean
 
 re: fclean all
 
-.PHONY: all clean fclean re bonus
+test: all
+	@printf "$(BLUE)Running 500 tests with 100 numbers...$(RESET)\n"
+	@printf "$(BLUE)=========================$(RESET)\n"
+	@SUM_100=0; \
+	OK_COUNT_100=0; \
+	for i in {1..500}; do \
+		COUNT=100; \
+		NUMBERS=`seq 1 $$COUNT | shuf`; \
+		MOVES=`./$(NAME) $$NUMBERS | wc -l`; \
+		SUM_100=$$((SUM_100 + MOVES)); \
+		printf "Test $$i ($$COUNT numbers): "; \
+		if [ $$MOVES -le 700 ]; then \
+			printf "$(GREEN)OK$(RESET) "; \
+			OK_COUNT_100=$$((OK_COUNT_100 + 1)); \
+		else \
+			printf "$(RED)KO$(RESET) "; \
+		fi; \
+		printf "$$MOVES moves\n"; \
+		OUTPUT=`./$(NAME) $$NUMBERS | ./$(NAME_BONUS) $$NUMBERS`; \
+		if [ "$$OUTPUT" = "OK" ]; then \
+			printf "$(GREEN)Checker: OK$(RESET)\n"; \
+		else \
+			printf "$(RED)Checker: KO$(RESET)\n"; \
+		fi; \
+		printf "\n"; \
+	done; \
+	AVG_100=$$((SUM_100 / 500)); \
+	printf "$(BLUE)Results for 100 numbers:$(RESET)\n"; \
+	printf "Average moves: $$AVG_100\n"; \
+	printf "Tests within limit: $$OK_COUNT_100/500\n\n"; \
+	\
+	printf "$(BLUE)Running 500 tests with 500 numbers...$(RESET)\n"
+	@printf "$(BLUE)=========================$(RESET)\n"
+	@SUM_500=0; \
+	OK_COUNT_500=0; \
+	for i in {1..500}; do \
+		COUNT=500; \
+		NUMBERS=`seq 1 $$COUNT | shuf`; \
+		MOVES=`./$(NAME) $$NUMBERS | wc -l`; \
+		SUM_500=$$((SUM_500 + MOVES)); \
+		printf "Test $$i ($$COUNT numbers): "; \
+		if [ $$MOVES -le 5700 ]; then \
+			printf "$(GREEN)OK$(RESET) "; \
+			OK_COUNT_500=$$((OK_COUNT_500 + 1)); \
+		else \
+			printf "$(RED)KO$(RESET) "; \
+		fi; \
+		printf "$$MOVES moves\n"; \
+		OUTPUT=`./$(NAME) $$NUMBERS | ./$(NAME_BONUS) $$NUMBERS`; \
+		if [ "$$OUTPUT" = "OK" ]; then \
+			printf "$(GREEN)Checker: OK$(RESET)\n"; \
+		else \
+			printf "$(RED)Checker: KO$(RESET)\n"; \
+		fi; \
+		printf "\n"; \
+	done; \
+	AVG_500=$$((SUM_500 / 500)); \
+	printf "$(BLUE)Results for 500 numbers:$(RESET)\n"; \
+	printf "Average moves: $$AVG_500\n"; \
+	printf "Tests within limit: $$OK_COUNT_500/500\n\n"; \
+	printf "$(BLUE)Overall Summary:$(RESET)\n"; \
+	printf "100 numbers - Average moves: $$AVG_100 (Limit: 700)\n"; \
+	printf "500 numbers - Average moves: $$AVG_500 (Limit: 5500)\n"
+
+
+.PHONY: all clean fclean re bonus test
