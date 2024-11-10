@@ -6,7 +6,7 @@
 /*   By: eebert <eebert@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/09 19:16:45 by eebert            #+#    #+#             */
-/*   Updated: 2024/11/09 19:17:50 by eebert           ###   ########.fr       */
+/*   Updated: 2024/11/10 17:04:58 by eebert           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,8 @@ int	*list_to_array(t_list *stack, size_t length)
 	t_list	*tmp;
 
 	array = (int *)malloc(sizeof(int) * length);
+	if (!array)
+		return (NULL);
 	i = 0;
 	tmp = stack;
 	while (tmp)

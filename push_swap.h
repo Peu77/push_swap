@@ -13,32 +13,36 @@
 #ifndef PUSH_SWAP_H
 # define PUSH_SWAP_H
 
-#include "libft.h"
-#include <stdbool.h>
+# include "libft.h"
+# include <stdbool.h>
 
-typedef struct s_stack_item {
-    int value;
-    int cost_a;
-    int cost_b;
-} t_stack_item;
+typedef struct s_stack_item
+{
+	int			value;
+	int			cost_a;
+	int			cost_b;
+}				t_stack_item;
 
-typedef struct t_array {
-    int *array;
-    size_t length;
-} t_array;
+typedef struct t_array
+{
+	int			*array;
+	size_t		length;
+}				t_array;
 
-int	is_in_array(int value, int *array, size_t length);
+int				is_in_array(int value, int *array, size_t length);
 
-int	*list_to_array(t_list *stack, size_t length);
+int				*list_to_array(t_list *stack, size_t length);
 
 t_stack_item	*find_cheapest_move(t_list *stack_b);
 
-void	execute_move(t_list **stack_a, t_list **stack_b, t_stack_item *item);
+void			execute_move(t_list **stack_a, t_list **stack_b,
+					t_stack_item *item);
 
-int *get_longest_sequence(int *array, size_t length, size_t *seq_length);
+int				*get_longest_sequence(int *array, size_t length,
+					size_t *seq_length);
 
-void calculate_costs(t_list *stack_a, t_list *stack_b);
+void			calculate_costs(t_list *stack_a, t_list *stack_b);
 
-void sort_stack(t_list **stack_a, t_list **stack_b);
+bool			sort_stack(t_list **stack_a, t_list **stack_b);
 
 #endif

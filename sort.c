@@ -6,14 +6,14 @@
 /*   By: eebert <eebert@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/06 19:35:44 by eebert            #+#    #+#             */
-/*   Updated: 2024/11/09 22:17:06 by eebert           ###   ########.fr       */
+/*   Updated: 2024/11/10 17:08:33 by eebert           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
 #include "libft.h"
-#include "push_swap.h"
 #include "operations.h"
+#include "push_swap.h"
 #include <stdbool.h>
 
 static void	push_to_b(t_list **stack_a, t_list **stack_b, t_array lis,
@@ -84,7 +84,7 @@ static void	final_rotation(t_list **stack_a)
 	}
 }
 
-void	sort_stack(t_list **stack_a, t_list **stack_b)
+bool	sort_stack(t_list **stack_a, t_list **stack_b)
 {
 	size_t			length;
 	int				*array;
@@ -95,6 +95,8 @@ void	sort_stack(t_list **stack_a, t_list **stack_b)
 	length = ft_lstsize(*stack_a);
 	array = list_to_array(*stack_a, length);
 	lis = get_longest_sequence(array, length, &lis_length);
+	if (!array || !lis)
+		return (free(array), free(lis), false);
 	push_to_b(stack_a, stack_b, (t_array){.array = lis, .length = lis_length},
 		(t_array){.array = array, .length = length});
 	while (*stack_b)
@@ -107,4 +109,5 @@ void	sort_stack(t_list **stack_a, t_list **stack_b)
 	final_rotation(stack_a);
 	free(lis);
 	free(array);
+	return (true);
 }

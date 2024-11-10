@@ -6,7 +6,7 @@
 /*   By: eebert <eebert@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/06 19:33:30 by eebert            #+#    #+#             */
-/*   Updated: 2024/11/09 22:25:21 by eebert           ###   ########.fr       */
+/*   Updated: 2024/11/10 16:59:15 by eebert           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,7 @@ bool	is_invalid_args(int argc, char **argv)
 				j++;
 				continue ;
 			}
-			if (!ft_isdigit(argv[i][j]) && argv[i][j] != ' ')
+			if (!ft_isdigit(argv[i][j]))
 				return (true);
 			j++;
 		}
@@ -79,49 +79,42 @@ bool	is_invalid_args(int argc, char **argv)
 
 bool	exist_duplicates(t_list *stack)
 {
-    t_list	*current;
-    t_list	*tmp;
+	t_list	*current;
+	t_list	*tmp;
 
-    current = stack;
-    while (current)
-    {
-        tmp = current->next;
-        while (tmp)
-        {
-            if (*(int *)current->content == *(int *)tmp->content)
-            {
-                return (true);
-            }
-            tmp = tmp->next;
-        }
-        current = current->next;
-    }
-    return (false);
+	current = stack;
+	while (current)
+	{
+		tmp = current->next;
+		while (tmp)
+		{
+			if (*(int *)current->content == *(int *)tmp->content)
+			{
+				return (true);
+			}
+			tmp = tmp->next;
+		}
+		current = current->next;
+	}
+	return (false);
 }
 
-void	parse_args_to_stack(int argc, char **argv, t_list **stack_a)
+bool	parse_args_to_stack(int argc, char **argv, t_list **stack_a)
 {
 	int				i;
-	int				j;
 	t_stack_item	*item;
-	char			**split;
 
 	i = 1;
 	while (i < argc)
 	{
-		split = ft_split(argv[i], ' ');
-		j = 0;
-		while (split[j])
-		{
-			item = malloc(sizeof(t_stack_item));
-			item->value = ft_atoi(split[j]);
-			item->cost_a = 0;
-			item->cost_b = 0;
-			free(split[j]);
-			ft_lstadd_back(stack_a, ft_lstnew(item));
-			j++;
-		}
-		free(split);
+		item = malloc(sizeof(t_stack_item));
+		if (!item)
+			return (false);
+		item->value = ft_atoi(argv[i]);
+		item->cost_a = 0;
+		item->cost_b = 0;
+		ft_lstadd_back(stack_a, ft_lstnew(item));
 		i++;
 	}
+	return (true);
 }
