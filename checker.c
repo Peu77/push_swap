@@ -6,7 +6,7 @@
 /*   By: eebert <eebert@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/09 20:57:00 by eebert            #+#    #+#             */
-/*   Updated: 2024/11/10 20:41:24 by eebert           ###   ########.fr       */
+/*   Updated: 2024/11/11 10:48:07 by eebert           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 #include "parse.h"
 #include <stdlib.h>
 #include <unistd.h>
+#include "visualizer.h"
 
 static int	get_next_operation(char *operation)
 {
@@ -104,6 +105,7 @@ static void	parse_exec_operations(t_list **stack_a, t_list **stack_b)
 			ft_lstclear(stack_a, free);
 			exit(1);
 		}
+		print_stacks(*stack_a, *stack_b);
 	}
 }
 

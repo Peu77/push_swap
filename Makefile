@@ -9,7 +9,7 @@ FTPRINTF_LIB = $(FTPRINTF_DIR)/libftprintf.a
 COMMON_SRC = operations_utils.c operations.c operations2.c operations3.c parse.c
 
 SRC = push_swap.c sort.c longest_sequence.c costs.c moves.c array_utils.c special_sort.c $(COMMON_SRC)
-SRC_BONUS = checker.c $(COMMON_SRC)
+SRC_BONUS = checker.c visualizer.c $(COMMON_SRC)
 
 OBJ = $(SRC:.c=.o)
 OBJ_BONUS = $(SRC_BONUS:.c=.o)
@@ -28,6 +28,9 @@ $(NAME): $(OBJ) $(FTPRINTF_LIB)
 	$(CC) $(CFLAGS) -o $(NAME) $(OBJ) $(FTPRINTF_LIB)
 
 bonus: $(NAME_BONUS)
+
+bonus_bonus: CFLAGS += -DBONUS_BONUS
+bonus_bonus: re
 
 $(NAME_BONUS): $(OBJ_BONUS)  $(FTPRINTF_LIB)
 	$(CC) $(CFLAGS) -o $(NAME_BONUS) $(OBJ_BONUS) $(FTPRINTF_LIB)
