@@ -6,7 +6,7 @@
 /*   By: eebert <eebert@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/05 13:56:03 by eebert            #+#    #+#             */
-/*   Updated: 2024/11/10 17:19:41 by eebert           ###   ########.fr       */
+/*   Updated: 2024/11/11 08:34:12 by eebert           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ int	main(int argc, char **argv)
 	stack_a = NULL;
 	stack_b = NULL;
 	if (!parse_args_to_stack(argc, argv, &stack_a) || exist_duplicates(stack_a)
-		|| !sort_stack(&stack_a, &stack_b))
+		|| !optimized_sort(&stack_a, &stack_b))
 	{
 		write(2, "Error\n", 6);
 		result = 1;

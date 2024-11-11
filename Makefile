@@ -8,7 +8,7 @@ FTPRINTF_LIB = $(FTPRINTF_DIR)/libftprintf.a
 
 COMMON_SRC = operations_utils.c operations.c operations2.c operations3.c parse.c
 
-SRC = push_swap.c sort.c longest_sequence.c costs.c moves.c array_utils.c $(COMMON_SRC)
+SRC = push_swap.c sort.c longest_sequence.c costs.c moves.c array_utils.c special_sort.c $(COMMON_SRC)
 SRC_BONUS = checker.c $(COMMON_SRC)
 
 OBJ = $(SRC:.c=.o)
@@ -108,6 +108,5 @@ test: all
 	printf "$(BLUE)Overall Summary:$(RESET)\n"; \
 	printf "100 numbers - Average moves: $$AVG_100 (Limit: 700)\n"; \
 	printf "500 numbers - Average moves: $$AVG_500 (Limit: 5500)\n"
-
 
 .PHONY: all clean fclean re bonus test

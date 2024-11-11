@@ -6,7 +6,7 @@
 /*   By: eebert <eebert@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/06 19:35:44 by eebert            #+#    #+#             */
-/*   Updated: 2024/11/10 17:08:33 by eebert           ###   ########.fr       */
+/*   Updated: 2024/11/11 09:13:18 by eebert           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ static void	push_to_b(t_list **stack_a, t_list **stack_b, t_array lis,
 	}
 }
 
-static int	get_min_pos(t_list *stack_a)
+int	get_min_pos(t_list *stack_a)
 {
 	int		min_pos;
 	int		min_val;
@@ -66,7 +66,7 @@ static int	get_min_pos(t_list *stack_a)
 	return (min_pos);
 }
 
-static void	final_rotation(t_list **stack_a)
+void	final_rotation(t_list **stack_a)
 {
 	const int	size = ft_lstsize(*stack_a);
 	int			min_pos;
@@ -110,4 +110,21 @@ bool	sort_stack(t_list **stack_a, t_list **stack_b)
 	free(lis);
 	free(array);
 	return (true);
+}
+
+bool	optimized_sort(t_list **stack_a, t_list **stack_b)
+{
+	const int	size = ft_lstsize(*stack_a);
+
+	if (size == 3)
+	{
+		sort_three(stack_a);
+		return (true);
+	}
+	if (size == 5)
+	{
+		sort_five(stack_a, stack_b);
+		return (true);
+	}
+	return (sort_stack(stack_a, stack_b));
 }

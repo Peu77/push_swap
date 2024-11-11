@@ -6,7 +6,7 @@
 /*   By: eebert <eebert@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/06 19:34:26 by eebert            #+#    #+#             */
-/*   Updated: 2024/11/09 21:43:54 by eebert           ###   ########.fr       */
+/*   Updated: 2024/11/11 09:22:39 by eebert           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,16 @@ typedef struct t_array
 	int			*array;
 	size_t		length;
 }				t_array;
+
+int				get_min_pos(t_list *stack_a);
+
+void			final_rotation(t_list **stack_a);
+
+void			sort_five(t_list **stack_a, t_list **stack_b);
+
+void			sort_three(t_list **stack_a);
+
+bool			optimized_sort(t_list **stack_a, t_list **stack_b);
 
 int				is_in_array(int value, int *array, size_t length);
 
